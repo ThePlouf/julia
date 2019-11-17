@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+function lala(event) {
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    ctx.moveTo(0, 0);
+    ctx.lineTo(200, 200);
+    ctx.stroke();
+}
+
+class App extends React.Component {
+    render() {
+        return <canvas id="canvas" width="512" height="512" style={{border:'1px solid'}} onClick={lala}></canvas>
+    }
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
