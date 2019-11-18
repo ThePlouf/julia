@@ -1,51 +1,53 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function getpixel(x,y) {
-    return [0,0,0]
-}
-
 function clear() {
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+
 function draw() {
+    clear();
+
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
-    let id = ctx.createImageData(1,1);
-    let d  = id.data;
-    d[3] = 255;
 
-    var x = 0
-    var y = 0
-
-    let fn = function() {
-        let v = getpixel(x,y);
-        d[0] = v[0];
-        d[1] = v[1];
-        d[2] = v[2];
-        ctx.putImageData(id, x, y);
-
-        x = x + 1;
-        if(x === canvas.width) {
-            x = 0
-            y = y + 1
-            if(y === canvas.height) {
-                return;
+    let workerEvent = event => {
+        switch(event.data.type) {
+            case "data":
+                let left = event.data.left;
+                let top = event.data.top;
+                let width = event.data.width;
+                let height = event.data.height;
+                let id = ctx.createImageData(width,height);
+                id.data.set(event.data.data);
+                ctx.putImageData(id, left, top);
+                break;
+            default:
+                break;
             }
-        }
-
-        setTimeout(fn,0)
+    }
     
+    let workerCount = 4;
+    var top = 0;
+    var height = Math.ceil(canvas.height / workerCount);
+    for(var i=0;i<workerCount;i++) {
+        let w = new Worker("worker.js");
+        w.postMessage({"left":0,"top":top,"width":canvas.width,"height":height});
+        w.onmessage = workerEvent
+        w = undefined;
+    
+        top = top + height;
+        if(top + height > canvas.height) height = canvas.height - top;
     }
 
-    setTimeout(fn,0)
+
 }
 
-let width = "64"
-let height = "64"
+let width = "512"
+let height = "512"
 
 class App extends React.Component {
     constructor(props) {
