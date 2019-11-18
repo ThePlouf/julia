@@ -1,11 +1,38 @@
 "use strict";
+
+function computePoint(x,y,msg) {
+    let escape = 4;
+
+    let zx = (x*msg.planeWidth/msg.totalWidth)+msg.planeLeft;
+    let zy = (y*msg.planeHeight/msg.totalHeight)+msg.planeTop;
+
+    var iteration = 0;
+  
+    while ((zx * zx + zy * zy < escape**2) && (iteration < msg.iterations)) {
+        let xtemp = zx * zx - zy * zy
+        zy = 2 * zx * zy  + msg.cy 
+        zx = xtemp + msg.cx
+        iteration = iteration + 1 
+    }
+  
+    if (iteration == msg.iterations) {
+        return 0;
+    } else {
+        let log_zn = Math.log(zx*zx+zy*zy) / 2;
+        let nu = Math.log(log_zn / Math.log(2)) / Math.log(2);
+        iteration = (iteration + 1.0) - nu;
+        return iteration;
+    }
+
+}
+
 onmessage = function(event) {
     try {
-        let data = event.data;
-        let left = data.left;
-        let top = data.top;
-        let width = data.width;
-        let height = data.height;
+        let msg = event.data;
+        let left = msg.left;
+        let top = msg.top;
+        let width = msg.width;
+        let height = msg.height;
 
         let tileWidth = 32;
         let tileHeight = 32;
@@ -19,33 +46,33 @@ onmessage = function(event) {
                 if(baseX + actualTileWidth > left + width) actualTileWidth = left + width - baseX;
                 if(baseY + actualTileHeight > top + height) actualTileHeight = top + height - baseY;
 
-                let data=new Array(actualTileWidth*actualTileHeight*4);
+                let data=new Array(actualTileWidth*actualTileHeight);
 
                 for(var ly=0;ly<actualTileHeight;ly++) {
                     for(var lx=0;lx<actualTileWidth;lx++) {
                         let x = lx+baseX;
                         let y = ly+baseY;
 
-                        //let v = (x+y)%256;
-                        let v = Math.floor((Math.cos(x/50)*Math.cos(y/50)+1)*128);
+                        let v = computePoint(x,y,msg);
 
-                        let offset = (lx+ly*actualTileWidth)*4;
-                        data[offset + 0] = v;
-                        data[offset + 1] = v;
-                        data[offset + 2] = v;
-                        data[offset + 3] = 255;
+                        let offset = (lx+ly*actualTileWidth);
+                        data[offset] = v;
                     }
                 }
 
-                let msg = {
+                let smallest = 0;
+                let largest = 10;
+                let imgData = data.map(x=>(x-smallest)/(largest-smallest)).map(x=>[x*255,x*255,x*255,255]).flat();
+
+                let response = {
                     "type":"data",
                     "left":baseX,
                     "top":baseY,
                     "width":actualTileWidth,
                     "height":actualTileHeight,
-                    "data":data
+                    "data":imgData
                 };
-                postMessage(msg);
+                postMessage(response);
             }
         }
     } finally {

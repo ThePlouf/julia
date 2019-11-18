@@ -33,9 +33,28 @@ function draw() {
     let workerCount = 4;
     var top = 0;
     var height = Math.ceil(canvas.height / workerCount);
+
+    let msg = {};
+    msg.left = 0;
+    msg.width = canvas.width;
+
+    msg.totalWidth = canvas.width;
+    msg.totalHeight = canvas.height;
+
+    msg.planeLeft = -2;
+    msg.planeTop = -2;
+    msg.planeWidth = 4;
+    msg.planeHeight = 4;
+
+    msg.cx = -0.7;
+    msg.cy = 0;
+    msg.iterations = 10000;
+
     for(var i=0;i<workerCount;i++) {
         let w = new Worker("worker.js");
-        w.postMessage({"left":0,"top":top,"width":canvas.width,"height":height});
+        msg.top = top;
+        msg.height = height;
+        w.postMessage(msg);
         w.onmessage = workerEvent
         w = undefined;
     
