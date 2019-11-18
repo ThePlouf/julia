@@ -63,7 +63,7 @@ class App extends React.Component {
         const height = "512";
 
         return <div style={{position:"relative"}}>
-            <canvas id="canvas" width={width} height={height}  style={{border:'1px solid'}}></canvas>
+            <canvas id="canvas" width={width} height={height} style={{border:'1px solid'}}></canvas>
             <MouseOverlay width={width} height={height} drawing={this.state.cancel!=null} />
             <Actions drawing={this.state.cancel!=null} onDraw={this.onDraw} onClear={this.onClear} onCancel={this.onCancel} />
             <Parameters 

@@ -32,7 +32,7 @@ export default class MouseOverlay extends React.Component {
     render() {
         if(this.props.drawing) return null;
         return (
-            <svg onMouseMove={this.onMouseMove} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} width={this.props.width} height={this.props.height} style={{position:"absolute",top:"0px",left:"0px"}}>
+            <svg onMouseMove={this.onMouseMove} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} width={this.props.width} height={this.props.height} style={{position:"absolute",top:"1px",left:"1px"}}>
                 {(()=>{
                     if(this.state.mouseOver) return <>
                         <line x1={this.state.x} y1="0" x2={this.state.x} y2={this.props.height} strokeWidth="1" stroke="black" strokeOpacity="50%"></line>
