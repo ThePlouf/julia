@@ -1,5 +1,5 @@
 import React from 'react';
-import Field from './Field.mjs';
+import Field from './Field';
 
 export default class Parameters extends React.Component {
     field(label, keyName) {
@@ -14,7 +14,6 @@ export default class Parameters extends React.Component {
             {this.field("C.x", "cx")}
             {this.field("C.y", "cy")}
             {this.field("Iterations", "iterations")}
-            }
         </div>;
     }
 }

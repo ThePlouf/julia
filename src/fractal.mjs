@@ -1,24 +1,24 @@
 export function clear(canvas) {
-    let ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 export function draw(canvas,params,onComplete) {
     clear(canvas);
 
-    let ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
 
-    let workerCount = 4;
-    var currentWorking = 0;
+    const workerCount = 4;
+    let currentWorking = 0;
 
-    let workerEvent = event => {
+    const workerEvent = event => {
         switch(event.data.type) {
             case "data":
-                let left = event.data.left;
-                let top = event.data.top;
-                let width = event.data.width;
-                let height = event.data.height;
-                let id = ctx.createImageData(width,height);
+                const left = event.data.left;
+                const top = event.data.top;
+                const width = event.data.width;
+                const height = event.data.height;
+                const id = ctx.createImageData(width,height);
                 id.data.set(event.data.data);
                 ctx.putImageData(id, left, top);
                 break;
@@ -31,20 +31,20 @@ export function draw(canvas,params,onComplete) {
             }
     }
     
-    var top = 0;
-    var height = Math.ceil(canvas.height / workerCount);
+    let top = 0;
+    let height = Math.ceil(canvas.height / workerCount);
 
-    let msg = {
+    const msg = {
         left:0,
         width:canvas.width,
         totalWidth:canvas.width,
         totalHeight:canvas.height
     };
-    for(var k in params) msg[k]=params[k];
+    for(let k in params) msg[k]=params[k];
 
-    let workers = new Array(workerCount);
+    const workers = new Array(workerCount);
 
-    for(var i=0;i<workerCount;i++) {
+    for(let i=0;i<workerCount;i++) {
         workers[i] = new Worker("worker.js");
         msg.top = top;
         msg.height = height;

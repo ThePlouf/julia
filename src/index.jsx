@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MouseOverlay from './components/MouseOverlay.mjs'
-import Actions from './components/Actions.mjs'
-import Parameters from './components/Parameters.mjs'
-
-const fractal = require('./fractal');
+import MouseOverlay from './components/MouseOverlay'
+import Actions from './components/Actions'
+import Parameters from './components/Parameters'
+import * as Fractal from './fractal'
 
 class App extends React.Component {
     constructor(props) {
@@ -32,7 +31,7 @@ class App extends React.Component {
     }
 
     onDraw() {
-        let params = {
+        const params = {
             planeLeft:parseFloat(this.state.planeLeft),
             planeTop:parseFloat(this.state.planeTop),
             planeWidth:parseFloat(this.state.planeWidth),
@@ -41,11 +40,11 @@ class App extends React.Component {
             cy:parseFloat(this.state.cy),
             iterations:parseInt(this.state.iterations)
         };
-        this.setState({cancel:fractal.draw(document.getElementById("canvas"),params,this.onComplete)});
+        this.setState({cancel:Fractal.draw(document.getElementById("canvas"),params,this.onComplete)});
     }
 
     onClear() {
-        fractal.clear(document.getElementById("canvas"));
+        Fractal.clear(document.getElementById("canvas"));
     }
 
     onCancel() {
@@ -60,10 +59,10 @@ class App extends React.Component {
     }
 
     render() {
-        let width = "512"
-        let height = "512"
+        const width = "512";
+        const height = "512";
 
-        return <div  style={{position:"relative"}}>
+        return <div style={{position:"relative"}}>
             <canvas id="canvas" width={width} height={height}  style={{border:'1px solid'}}></canvas>
             <MouseOverlay width={width} height={height} drawing={this.state.cancel!=null} />
             <Actions drawing={this.state.cancel!=null} onDraw={this.onDraw} onClear={this.onClear} onCancel={this.onCancel} />
