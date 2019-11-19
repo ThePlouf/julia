@@ -11,8 +11,8 @@ export default function MouseOverlay({width,height,drawing}) {
                 if(mouseOver) return <>
                     <line x1={position.x} y1="0" x2={position.x} y2={height} strokeWidth="1" stroke="black" strokeOpacity="50%"></line>
                     <line x1="0" y1={position.y} x2={width} y2={position.y} strokeWidth="1" stroke="black" strokeOpacity="50%"></line>
-                    <line x1={position.x+1} y1="0" x2={position.x+1} y2={height} strokeWidth="1" stroke="white" strokeOpacity="10%"></line>
-                    <line x1="0" y1={position.y+1} x2={width} y2={position.y+1} strokeWidth="1" stroke="white" strokeOpacity="10%"></line>
+                    <line x1={position.x+1} y1="0" x2={position.x+1} y2={height} strokeWidth="1" stroke="white" strokeOpacity="50%"></line>
+                    <line x1="0" y1={position.y+1} x2={width} y2={position.y+1} strokeWidth="1" stroke="white" strokeOpacity="50%"></line>
                     </>
             })()}
         </svg>
