@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-export default function MouseOverlay({width,height,drawing}) {
+export default function MouseOverlay({width,height,drawing,drawnPlane,selectedPlane,onSelectedPlaneChanged,onReset,onDraw}) {
     const [position,setPosition] = useState({x:0,y:0});
     const [mouseOver,setMouseOver] = useState(false);
 
