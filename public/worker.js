@@ -60,9 +60,7 @@ onmessage = function(event) {
                     }
                 }
 
-                const smallest = 0;
-                const largest = 10;
-                const imgData = data.map(x=>(x-smallest)/(largest-smallest)).map(x=>[x*255,x*255,x*255,255]).flat();
+                const imgData = data.map(x=>x==0?[0,0,0,255]:[(Math.sin(x)+1)*127,(Math.sin(x+2)+1)*127,(Math.sin(x+5.2)+1)*127,255]).flat();
 
                 const response = {
                     "type":"data",
