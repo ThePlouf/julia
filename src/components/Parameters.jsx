@@ -17,10 +17,10 @@ function Plane({plane,disabled,onChange,label}) {
 
     return <fieldset>
         <legend>{label}</legend>
-        <div><label>Left<input ref={leftInput} value={plane.left} onChange={onFieldChange} disabled={disabled} ></input></label></div>
-        <div><label>Top<input ref={topInput} value={plane.top} onChange={onFieldChange} disabled={disabled} ></input></label></div>
-        <div><label>Width<input ref={widthInput} value={plane.width} onChange={onFieldChange} disabled={disabled} ></input></label></div>
-        <div><label>Height<input ref={heightInput} value={plane.height} onChange={onFieldChange} disabled={disabled} ></input></label></div>
+        <div><label>Left<input ref={leftInput} value={plane.left} onChange={onFieldChange} disabled={disabled} type="number" step="any" required={true}></input></label></div>
+        <div><label>Top<input ref={topInput} value={plane.top} onChange={onFieldChange} disabled={disabled} type="number" step="any"  required={true}></input></label></div>
+        <div><label>Width<input ref={widthInput} value={plane.width} onChange={onFieldChange} disabled={disabled} type="number" step="any"  required={true}></input></label></div>
+        <div><label>Height<input ref={heightInput} value={plane.height} onChange={onFieldChange} disabled={disabled} type="number" step="any"  required={true}></input></label></div>
     </fieldset>
 }
 
@@ -37,14 +37,14 @@ function Point({point,disabled,onChange,label}) {
 
     return <fieldset>
         <legend>{label}</legend>
-        <div><label>X<input ref={xInput} value={point.x} onChange={onFieldChange} disabled={disabled} ></input></label></div>
-        <div><label>Y<input ref={yInput} value={point.y} onChange={onFieldChange} disabled={disabled} ></input></label></div>
+        <div><label>X<input ref={xInput} value={point.x} onChange={onFieldChange} disabled={disabled} type="number" step="any" required={true}></input></label></div>
+        <div><label>Y<input ref={yInput} value={point.y} onChange={onFieldChange} disabled={disabled} type="number" step="any" required={true}></input></label></div>
     </fieldset>
 }
 
 function Iterations({value,disabled,onChange}) {
     return <div><label>Iterations
-        <input value={value} onChange={e=>onChange(e.target.value)} disabled={disabled}></input>
+        <input value={value} onChange={e=>onChange(e.target.value)} disabled={disabled} type="number" step={1} min={1} required={true}></input>
     </label></div>
 }
 
