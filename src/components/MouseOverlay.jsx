@@ -1,15 +1,61 @@
-import React, {useState} from 'react';
+import React from 'react';
 import SelectionRectangle from './SelectionRectangle'
 
-function AutoSelection() {
-    const [rect,setRect]=useState({x:50,y:50,w:200,h:200});
-    const change=(x,y,w,h)=>{
-        setRect({x:x,y:y,w:w,h:h});
+function planeToScreen(width,height,drawn,rect) {
+    const x = (rect.left - drawn.left) * width / drawn.width
+    const y = (rect.top - drawn.top) * height / drawn.height
+    const w = rect.width * width / drawn.width;
+    const h = rect.height * height / drawn.height;
+    return {
+        left:x,
+        top:y,
+        width:w,
+        height:h
     }
-    return <SelectionRectangle left={rect.x} top={rect.y} width={rect.w} height={rect.h} onSelectionChange={change}></SelectionRectangle>
 }
 
-export default function MouseOverlay({width,height,drawing,drawnPlane,selectedPlane,onSelectedPlaneChanged,onReset,onDraw}) {
-    return <AutoSelection></AutoSelection>
+function screenToPlane(width,height,drawn,rect) {
+    const x = rect.left * drawn.width / width  + drawn.left;
+    const y = rect.top * drawn.height / height  + drawn.top;
+    const w = rect.width * drawn.width / width;
+    const h = rect.height * drawn.height / height;
 
+    return {
+        left:x,
+        top:y,
+        width:w,
+        height:h
+    }
+
+}
+
+function toNum(plane) {
+    return {
+        left:parseFloat(plane.left),
+        top:parseFloat(plane.top),
+        width:parseFloat(plane.width),
+        height:parseFloat(plane.height)
+    }
+}
+
+
+export default function MouseOverlay({width,height,drawing,drawnPlane,selectedPlane,onSelectedPlaneChanged=()=>{},onReset,onDraw}) {
+    const drawnPlaneNum = toNum(drawnPlane);
+    const selectedPlaneNum = toNum(selectedPlane);
+
+    const onSelectionChange = (x,y,w,h) => {
+        const plane = screenToPlane(width,height,drawnPlaneNum,{left:x,top:y,width:w,height:h});
+        onSelectedPlaneChanged(plane);
+    }
+
+    const selectionOnScreen = planeToScreen(width,height,drawnPlaneNum,selectedPlaneNum);
+    return <SelectionRectangle
+        left={selectionOnScreen.left}
+        top={selectionOnScreen.top}
+        width={selectionOnScreen.width}
+        height={selectionOnScreen.height}
+        onSelectionChange={onSelectionChange}
+        >
+
+    </SelectionRectangle>
 }

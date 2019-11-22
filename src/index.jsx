@@ -32,7 +32,6 @@ class App extends React.Component {
     }
 
     onDraw() {
-        console.log("draw");
         const params = {
             planeLeft:parseFloat(this.state.selectedPlane.left),
             planeTop:parseFloat(this.state.selectedPlane.top),
@@ -44,12 +43,11 @@ class App extends React.Component {
         };
         this.setState({
             cancel:Fractal.draw(document.getElementById("canvas"),params,this.onComplete),
-            drawPlane:this.state.selectedPlane
+            drawnPlane:this.state.selectedPlane
         });
     }
 
     onClear() {
-        console.log("clear");
         Fractal.clear(document.getElementById("canvas"));
     }
 
