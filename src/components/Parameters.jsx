@@ -51,7 +51,7 @@ function Iterations({value,disabled,onChange}) {
 export default function Parameters({drawing,onPlaneChanged,onCChanged,onIterationsChanged,onReset,plane,c,iterations}) {
     return <div>
         <Plane plane={plane} label="Plane" disabled={drawing} onChange={onPlaneChanged} />
-        <input type="button" onClick={onReset} type="button" value="Reset plane"></input>
+        <input type="button" onClick={onReset} value="Reset plane"></input>
         <Point point={c} disabled={drawing} label="C" onChange={onCChanged} />
         <Iterations value={iterations} disabled={drawing} onChange={onIterationsChanged} />
     </div>

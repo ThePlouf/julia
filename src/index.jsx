@@ -76,7 +76,7 @@ class App extends React.Component {
         const width = "512";
         const height = "512";
 
-        return <div style={{position:"relative"}}>
+        return <div style={{position:"relative",backgroundColor:"white"}}>
             <canvas id="canvas" width={width} height={height} style={{border:'1px solid'}}></canvas>
             <MouseOverlay
                 width={width}
@@ -89,23 +89,24 @@ class App extends React.Component {
                 onDraw={this.onDraw}
             />
             <form onSubmit={e=>{this.onDraw();e.preventDefault();}}>
-            <Actions
-                drawing={this.state.cancel!=null}
-                onDraw={this.onDraw}
-                onClear={this.onClear}
-                onCancel={this.onCancel}
-            />
-            <Parameters 
-                drawing={this.state.cancel!=null}
-                onPlaneChanged={this.onSelectedPlaneChanged}
-                onCChanged={newC=>this.setState({c:newC})}
-                onIterationsChanged={newI=>this.setState({iterations:newI})}
-                plane={this.state.selectedPlane}
-                c={this.state.c}
-                iterations={this.state.iterations}
-                onReset={this.onReset}
-            />
+                <Actions
+                    drawing={this.state.cancel!=null}
+                    onDraw={this.onDraw}
+                    onClear={this.onClear}
+                    onCancel={this.onCancel}
+                />
+                <Parameters 
+                    drawing={this.state.cancel!=null}
+                    onPlaneChanged={this.onSelectedPlaneChanged}
+                    onCChanged={newC=>this.setState({c:newC})}
+                    onIterationsChanged={newI=>this.setState({iterations:newI})}
+                    plane={this.state.selectedPlane}
+                    c={this.state.c}
+                    iterations={this.state.iterations}
+                    onReset={this.onReset}
+                />
             </form>
+
         </div>
     }
 }

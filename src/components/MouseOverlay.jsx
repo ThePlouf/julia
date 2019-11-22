@@ -1,20 +1,15 @@
 import React, {useState} from 'react';
+import SelectionRectangle from './SelectionRectangle'
+
+function AutoSelection() {
+    const [rect,setRect]=useState({x:50,y:50,w:200,h:200});
+    const change=(x,y,w,h)=>{
+        setRect({x:x,y:y,w:w,h:h});
+    }
+    return <SelectionRectangle left={rect.x} top={rect.y} width={rect.w} height={rect.h} onSelectionChange={change}></SelectionRectangle>
+}
 
 export default function MouseOverlay({width,height,drawing,drawnPlane,selectedPlane,onSelectedPlaneChanged,onReset,onDraw}) {
-    const [position,setPosition] = useState({x:0,y:0});
-    const [mouseOver,setMouseOver] = useState(false);
+    return <AutoSelection></AutoSelection>
 
-    if(drawing) return null;
-    return (
-        <svg onMouseMove={(e)=>{setPosition({x:e.nativeEvent.layerX,y:e.nativeEvent.layerY})}} onMouseEnter={()=>setMouseOver(true)} onMouseLeave={()=>setMouseOver(false)} width={width} height={height} style={{position:"absolute",top:"1px",left:"1px"}}>
-              {(()=>{
-                if(mouseOver) return <>
-                    <line x1={position.x} y1="0" x2={position.x} y2={height} strokeWidth="1" stroke="black" strokeOpacity="50%"></line>
-                    <line x1="0" y1={position.y} x2={width} y2={position.y} strokeWidth="1" stroke="black" strokeOpacity="50%"></line>
-                    <line x1={position.x+1} y1="0" x2={position.x+1} y2={height} strokeWidth="1" stroke="white" strokeOpacity="50%"></line>
-                    <line x1="0" y1={position.y+1} x2={width} y2={position.y+1} strokeWidth="1" stroke="white" strokeOpacity="50%"></line>
-                    </>
-            })()}
-        </svg>
-        );
 }
