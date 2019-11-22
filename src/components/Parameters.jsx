@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 
-function Plane({plane,disabled,onChange}) {
+function Plane({plane,disabled,onChange,label}) {
     const leftInput = useRef();
     const topInput = useRef();
     const widthInput = useRef();
@@ -15,15 +15,16 @@ function Plane({plane,disabled,onChange}) {
         })
     };
 
-    return <div>
-        <div>Left</div><input ref={leftInput} value={plane.left} onChange={onFieldChange} disabled={disabled} ></input>
-        <div>Top</div><input ref={topInput} value={plane.top} onChange={onFieldChange} disabled={disabled} ></input>
-        <div>Width</div><input ref={widthInput} value={plane.width} onChange={onFieldChange} disabled={disabled} ></input>
-        <div>Height</div><input ref={heightInput} value={plane.height} onChange={onFieldChange} disabled={disabled} ></input>
-    </div>
+    return <fieldset>
+        <legend>{label}</legend>
+        <div><label>Left<input ref={leftInput} value={plane.left} onChange={onFieldChange} disabled={disabled} ></input></label></div>
+        <div><label>Top<input ref={topInput} value={plane.top} onChange={onFieldChange} disabled={disabled} ></input></label></div>
+        <div><label>Width<input ref={widthInput} value={plane.width} onChange={onFieldChange} disabled={disabled} ></input></label></div>
+        <div><label>Height<input ref={heightInput} value={plane.height} onChange={onFieldChange} disabled={disabled} ></input></label></div>
+    </fieldset>
 }
 
-function Point({point,disabled,onChange}) {
+function Point({point,disabled,onChange,label}) {
     const xInput = useRef();
     const yInput = useRef();
 
@@ -34,29 +35,24 @@ function Point({point,disabled,onChange}) {
         })
     };
 
-    return <div>
-        <div>X</div><input ref={xInput} value={point.x} onChange={onFieldChange} disabled={disabled} ></input>
-        <div>Y</div><input ref={yInput} value={point.y} onChange={onFieldChange} disabled={disabled} ></input>
-    </div>
+    return <fieldset>
+        <legend>{label}</legend>
+        <div><label>X<input ref={xInput} value={point.x} onChange={onFieldChange} disabled={disabled} ></input></label></div>
+        <div><label>Y<input ref={yInput} value={point.y} onChange={onFieldChange} disabled={disabled} ></input></label></div>
+    </fieldset>
 }
 
 function Iterations({value,disabled,onChange}) {
-    return <div>
-        <div>Iterations</div><input value={value} onChange={e=>onChange(e.target.value)} disabled={disabled}></input>
-    </div>
+    return <div><label>Iterations
+        <input value={value} onChange={e=>onChange(e.target.value)} disabled={disabled}></input>
+    </label></div>
 }
 
 export default function Parameters({drawing,onPlaneChanged,onCChanged,onIterationsChanged,onReset,plane,c,iterations}) {
     return <div>
-        <div>
-            <div>Plane</div>
-            <Plane plane={plane} disabled={drawing} onChange={onPlaneChanged} />
-            <button onClick={onReset} type="button">Reset plane</button>
-        </div>
-        <div>
-            <div>C</div>
-            <Point point={c} disabled={drawing} onChange={onCChanged} />
-        </div>
+        <Plane plane={plane} label="Plane" disabled={drawing} onChange={onPlaneChanged} />
+        <input type="button" onClick={onReset} type="button" value="Reset plane"></input>
+        <Point point={c} disabled={drawing} label="C" onChange={onCChanged} />
         <Iterations value={iterations} disabled={drawing} onChange={onIterationsChanged} />
     </div>
 }

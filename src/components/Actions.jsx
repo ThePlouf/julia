@@ -2,8 +2,8 @@ import React from 'react';
 
 export default function Actions({onClear,onDraw,onCancel,drawing}) {
     return <div>
-        <button onClick={onClear} disabled={drawing} type="button">Clear</button>
-        <button onClick={onDraw} disabled={drawing} default={true}>Draw</button>
-        <button onClick={onCancel} disabled={!drawing} type="button">Cancel</button>
+        <input onClick={onClear} disabled={drawing} type="button" value="Clear"></input>
+        <input onClick={onDraw} disabled={drawing} type="submit" default={true} value="Draw"></input>
+        <input onClick={onCancel} disabled={!drawing} type="button" value="Cancel"></input>
     </div>
 }
