@@ -22,7 +22,8 @@ class App extends React.Component {
         this.onCancel = this.onCancel.bind(this);
         this.onComplete = this.onComplete.bind(this);
         this.onSelectedPlaneChanged = this.onSelectedPlaneChanged.bind(this);
-        this.onReset = this.onReset.bind(this);
+        this.onSelectionReset = this.onSelectionReset.bind(this);
+        this.onPlaneReinit = this.onPlaneReinit.bind(this);
     }
 
     onComplete() {
@@ -43,7 +44,7 @@ class App extends React.Component {
         };
         this.setState({
             cancel:Fractal.draw(document.getElementById("canvas"),params,this.onComplete),
-            drawnPlane:this.state.selectedPlane
+            drawnPlane:this.state.selectedPlane,
         });
     }
 
@@ -58,10 +59,17 @@ class App extends React.Component {
         }
     }
 
-    onReset() {
+    onSelectionReset() {
         this.setState({
             selectedPlane:this.state.drawnPlane
         });
+    }
+
+    onPlaneReinit() {
+        const plane={left:"-2",top:"-2",width:"4",height:"4"};
+        this.setState({
+            selectedPlane:plane
+        },this.onDraw);
     }
 
     onSelectedPlaneChanged(plane) {
@@ -83,13 +91,12 @@ class App extends React.Component {
                 drawnPlane={this.state.drawnPlane}
                 selectedPlane={this.state.selectedPlane}
                 onSelectedPlaneChanged={this.onSelectedPlaneChanged}
-                onReset={this.onReset}
+                onReset={this.onSelectionReset}
                 onDraw={this.onDraw}
             />
             <form onSubmit={e=>{this.onDraw();e.preventDefault();}}>
                 <Actions
                     drawing={this.state.cancel!=null}
-                    onDraw={this.onDraw}
                     onClear={this.onClear}
                     onCancel={this.onCancel}
                 />
@@ -101,7 +108,8 @@ class App extends React.Component {
                     plane={this.state.selectedPlane}
                     c={this.state.c}
                     iterations={this.state.iterations}
-                    onReset={this.onReset}
+                    onClearSelection={this.onSelectionReset}
+                    onPlaneReinit={this.onPlaneReinit}
                 />
             </form>
 

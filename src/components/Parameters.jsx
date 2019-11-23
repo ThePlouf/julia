@@ -48,10 +48,11 @@ function Iterations({value,disabled,onChange}) {
     </label></div>
 }
 
-export default function Parameters({drawing,onPlaneChanged,onCChanged,onIterationsChanged,onReset,plane,c,iterations}) {
+export default function Parameters({drawing,onPlaneChanged,onCChanged,onIterationsChanged,onClearSelection,onPlaneReinit,plane,c,iterations}) {
     return <div>
         <Plane plane={plane} label="Plane" disabled={drawing} onChange={onPlaneChanged} />
-        <input type="button" onClick={onReset} value="Reset plane"></input>
+        <input type="button" disabled={drawing} onClick={onClearSelection} value="Clear selection"></input>
+        <input type="button" disabled={drawing} onClick={onPlaneReinit} value="Reset plane"></input>
         <Point point={c} disabled={drawing} label="C" onChange={onCChanged} />
         <Iterations value={iterations} disabled={drawing} onChange={onIterationsChanged} />
     </div>
