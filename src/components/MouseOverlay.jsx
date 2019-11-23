@@ -102,7 +102,6 @@ export default function MouseOverlay({width,height,drawnPlane,selectedPlane,onSe
                 height:bounds.height+"px",
                 border:"1px solid white",
                 position:"absolute",
-                mixBlendMode:"difference",
                 display:mouseDown&&bounds.valid?null:"none"}}
             >
 

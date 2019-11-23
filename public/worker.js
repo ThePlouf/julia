@@ -1,5 +1,3 @@
-"use strict";
-
 function computePoint(x,y,msg) {
     const escape = 4;
 
@@ -15,7 +13,7 @@ function computePoint(x,y,msg) {
         iteration = iteration + 1 
     }
   
-    if (iteration == msg.iterations) {
+    if (iteration === msg.iterations) {
         return 0;
     } else {
         const log_zn = Math.log(zx*zx+zy*zy) / 2;
@@ -40,8 +38,8 @@ onmessage = function(event) {
         for(let baseY=top;baseY<top+height;baseY+=tileHeight) {
             for(let baseX=left;baseX<left+width;baseX+=tileWidth) {
 
-                const actualTileWidth = tileWidth;
-                const actualTileHeight = tileHeight;
+                let actualTileWidth = tileWidth;
+                let actualTileHeight = tileHeight;
 
                 if(baseX + actualTileWidth > left + width) actualTileWidth = left + width - baseX;
                 if(baseY + actualTileHeight > top + height) actualTileHeight = top + height - baseY;
@@ -72,7 +70,7 @@ onmessage = function(event) {
                     }
                 }
 
-                const imgData = data.map(x=>x==0?[0,0,0,255]:[(Math.sin(x)+1)*127,(Math.sin(x+2)+1)*127,(Math.sin(x+5.2)+1)*127,255]).flat();
+                const imgData = data.map(x=>x===0?[0,0,0,255]:[(Math.sin(x)+1)*127,(Math.sin(x+2)+1)*127,(Math.sin(x+5.2)+1)*127,255]).flat();
 
                 const response = {
                     "type":"data",
@@ -87,6 +85,7 @@ onmessage = function(event) {
         }
     } finally {
         postMessage({"type":"completed"});
+        // eslint-disable-next-line no-restricted-globals
         close();
     }
     

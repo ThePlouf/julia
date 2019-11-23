@@ -16,8 +16,8 @@ export default function SelectionRectangle({left=0,top=0,width=50,height=50,cs=7
 
     let cleft = left;
     let ctop = top;
-    let cwidth = width + 1;
-    let cheight = height + 1;
+    let cwidth = width;
+    let cheight = height;
     
     let c1 = "nwse-resize";
     let c2 = "nesw-resize";
@@ -36,29 +36,11 @@ export default function SelectionRectangle({left=0,top=0,width=50,height=50,cs=7
 
     const hs = (cs-1)/2;
     return <>
-        <Draggable onDragDelta={(x,y)=>move("c",x,y)} left={cleft} top={ctop} onDoubleClick={e=>onAction()} style={{width:cwidth+"px",height:cheight+"px"}}></Draggable>
-        <Draggable onDragDelta={(x,y)=>move("nw",x,y)} left={left-hs} top={top-hs} cursor={c1} draggingCursor={c1} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
-        <Draggable onDragDelta={(x,y)=>move("ne",x,y)} left={left+width-hs+1} top={top-hs} cursor={c2} draggingCursor={c2} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
-        <Draggable onDragDelta={(x,y)=>move("sw",x,y)} left={left-hs} top={top+height-hs+1} cursor={c2} draggingCursor={c2} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
-        <Draggable onDragDelta={(x,y)=>move("se",x,y)} left={left+width-hs+1} top={top+height-hs+1} cursor={c1} draggingCursor={c1} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
-
-        {(()=>{
-            if(cheight>cs) {
-                return <>
-                <div style={{position:"absolute",left:cleft+"px",top:(ctop+hs+1)+"px",width:ls+"px",height:(cheight-cs)+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
-                <div style={{position:"absolute",left:(cleft+cwidth)+"px",top:(ctop+hs+1)+"px",width:ls+"px",height:(cheight-cs)+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
-                </>
-            }
-        })()}
-
-        {(()=>{
-            if(cwidth>cs) {
-                return <>
-                <div style={{position:"absolute",left:(cleft+hs+1)+"px",top:ctop+"px",width:(cwidth-cs)+"px",height:ls+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
-                <div style={{position:"absolute",left:(cleft+hs+1)+"px",top:(ctop+cheight)+"px",width:(cwidth-cs)+"px",height:ls+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
-                </>
-            }
-        })()}
+        <Draggable onDragDelta={(x,y)=>move("c",x,y)} left={cleft} top={ctop} onDoubleClick={e=>onAction()} style={{width:cwidth+"px",height:cheight+"px",border:"1px solid white"}}></Draggable>
+        <Draggable onDragDelta={(x,y)=>move("nw",x,y)} left={left-hs} top={top-hs} cursor={c1} draggingCursor={c1} style={{width:cs,height:cs,backgroundColor:"white"}}></Draggable>
+        <Draggable onDragDelta={(x,y)=>move("ne",x,y)} left={left+width-hs+1} top={top-hs} cursor={c2} draggingCursor={c2} style={{width:cs,height:cs,backgroundColor:"white"}}></Draggable>
+        <Draggable onDragDelta={(x,y)=>move("sw",x,y)} left={left-hs} top={top+height-hs+1} cursor={c2} draggingCursor={c2} style={{width:cs,height:cs,backgroundColor:"white"}}></Draggable>
+        <Draggable onDragDelta={(x,y)=>move("se",x,y)} left={left+width-hs+1} top={top+height-hs+1} cursor={c1} draggingCursor={c1} style={{width:cs,height:cs,backgroundColor:"white"}}></Draggable>
     </>
 
 }
