@@ -18,11 +18,12 @@ class App extends React.Component {
 
         this.width = "512";
         this.height = "512";
+
+        this.canvas = React.createRef();
     
         this.state.selectedPlane = this.state.drawnPlane;
         
         this.onDraw = this.onDraw.bind(this);
-        this.onClear = this.onClear.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onComplete = this.onComplete.bind(this);
         this.onSelectedPlaneChanged = this.onSelectedPlaneChanged.bind(this);
@@ -49,8 +50,8 @@ class App extends React.Component {
     }
 
     onDraw() {
-        //this.onClear();
-        Fractal.zoom(document.getElementById("canvas"),this.selectionToScreen())
+        this.onCancel();
+        Fractal.zoom(this.canvas.current,this.selectionToScreen())
         const params = {
             planeLeft:parseFloat(this.state.selectedPlane.left),
             planeTop:parseFloat(this.state.selectedPlane.top),
@@ -61,13 +62,9 @@ class App extends React.Component {
             iterations:parseInt(this.state.iterations)
         };
         this.setState({
-            cancel:Fractal.draw(document.getElementById("canvas"),params,this.onComplete),
+            cancel:Fractal.draw(this.canvas.current,params,this.onComplete),
             drawnPlane:this.state.selectedPlane,
         });
-    }
-
-    onClear() {
-        Fractal.clear(document.getElementById("canvas"));
     }
 
     onCancel() {
@@ -97,16 +94,15 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.onDraw();
+        setTimeout(this.onDraw,0);
     }
 
     render() {
         return <div style={{position:"relative",backgroundColor:"white"}}>
-            <canvas id="canvas" width={this.width} height={this.height} style={{border:'1px solid'}}></canvas>
+            <canvas ref={this.canvas} width={this.width} height={this.height} style={{border:'1px solid'}}></canvas>
             <MouseOverlay
                 width={this.width}
                 height={this.height}
-                drawing={this.state.cancel!=null}
                 drawnPlane={this.state.drawnPlane}
                 selectedPlane={this.state.selectedPlane}
                 onSelectedPlaneChanged={this.onSelectedPlaneChanged}
@@ -116,11 +112,10 @@ class App extends React.Component {
             <form onSubmit={e=>{this.onDraw();e.preventDefault();}}>
                 <Actions
                     drawing={this.state.cancel!=null}
-                    onClear={this.onClear}
                     onCancel={this.onCancel}
                 />
-                <Parameters 
-                    drawing={this.state.cancel!=null}
+                <Parameters
+                    drawnPlane={this.state.drawnPlane}
                     onPlaneChanged={this.onSelectedPlaneChanged}
                     onCChanged={newC=>this.setState({c:newC})}
                     onIterationsChanged={newI=>this.setState({iterations:newI})}

@@ -42,7 +42,7 @@ function same(p1,p2) {
     return p1.left === p2.left && p1.top === p2.top && p1.width === p2.width && p1.height === p2.height;
 }
 
-export default function MouseOverlay({width,height,drawing,drawnPlane,selectedPlane,onSelectedPlaneChanged=()=>{},onReset=()=>{},onDraw=()=>{}}) {
+export default function MouseOverlay({width,height,drawnPlane,selectedPlane,onSelectedPlaneChanged=()=>{},onReset=()=>{},onDraw=()=>{}}) {
     const mainDiv = useRef(null);
     const [mouseDown,setMouseDown] = useState(false);
     const [initialPos,setInitialPos] = useState({x:0,y:0});
@@ -83,7 +83,6 @@ export default function MouseOverlay({width,height,drawing,drawnPlane,selectedPl
     }
 
     const down = e => {
-        if(drawing) return;
         if(!isSame) {
             if(e.nativeEvent.target === mainDiv.current) {
                 onReset();
@@ -101,7 +100,6 @@ export default function MouseOverlay({width,height,drawing,drawnPlane,selectedPl
     };
 
     const up = e => {
-        if(drawing) return;
         if(!isSame) return;
         if(!mouseDown) return;
         setMouseDown(false);
@@ -118,7 +116,6 @@ export default function MouseOverlay({width,height,drawing,drawnPlane,selectedPl
     };
 
     const move = e => {
-        if(drawing) return;
         if(!mouseDown) return;
         const x = e.nativeEvent.offsetX;
         const y = e.nativeEvent.offsetY;
@@ -150,7 +147,7 @@ export default function MouseOverlay({width,height,drawing,drawnPlane,selectedPl
             >
 
         </div>
-        <div style={{display:isSame||drawing?"none":null}}>
+        <div style={{display:isSame?"none":null}}>
             <SelectionRectangle
                 left={selectionOnScreen.left}
                 top={selectionOnScreen.top}
