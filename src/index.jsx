@@ -4,6 +4,7 @@ import MouseOverlay from './components/MouseOverlay'
 import Actions from './components/Actions'
 import Parameters from './components/Parameters'
 import * as Fractal from './fractal'
+import * as Utils from './fractal-utils'
 
 class App extends React.Component {
 
@@ -52,11 +53,13 @@ class App extends React.Component {
     onDraw() {
         this.onCancel();
         Fractal.zoom(this.canvas.current,this.selectionToScreen())
+        const plane = Utils.parsePlane(this.state.selectedPlane);
+
         const params = {
-            planeLeft:parseFloat(this.state.selectedPlane.left),
-            planeTop:parseFloat(this.state.selectedPlane.top),
-            planeWidth:parseFloat(this.state.selectedPlane.width),
-            planeHeight:parseFloat(this.state.selectedPlane.height),
+            planeLeft:plane.left,
+            planeTop:plane.top,
+            planeWidth:plane.width,
+            planeHeight:plane.height,
             cx:parseFloat(this.state.c.x),
             cy:parseFloat(this.state.c.y),
             iterations:parseInt(this.state.iterations)

@@ -1,46 +1,6 @@
 import React, {useState,useRef} from 'react';
 import SelectionRectangle from './SelectionRectangle'
-
-function planeToScreen(width,height,drawn,rect) {
-    const x = (rect.left - drawn.left) * width / drawn.width
-    const y = (rect.top - drawn.top) * height / drawn.height
-    const w = rect.width * width / drawn.width;
-    const h = rect.height * height / drawn.height;
-    return {
-        left:x,
-        top:y,
-        width:w,
-        height:h
-    }
-}
-
-function screenToPlane(width,height,drawn,rect) {
-    const x = rect.left * drawn.width / width  + drawn.left;
-    const y = rect.top * drawn.height / height  + drawn.top;
-    const w = rect.width * drawn.width / width;
-    const h = rect.height * drawn.height / height;
-
-    return {
-        left:x,
-        top:y,
-        width:w,
-        height:h
-    }
-
-}
-
-function toNum(plane) {
-    return {
-        left:parseFloat(plane.left),
-        top:parseFloat(plane.top),
-        width:parseFloat(plane.width),
-        height:parseFloat(plane.height)
-    }
-}
-
-function same(p1,p2) {
-    return p1.left === p2.left && p1.top === p2.top && p1.width === p2.width && p1.height === p2.height;
-}
+import * as Utils from '../fractal-utils.mjs'
 
 export default function MouseOverlay({width,height,drawnPlane,selectedPlane,onSelectedPlaneChanged=()=>{},onReset=()=>{},onDraw=()=>{}}) {
     const mainDiv = useRef(null);
@@ -48,8 +8,8 @@ export default function MouseOverlay({width,height,drawnPlane,selectedPlane,onSe
     const [initialPos,setInitialPos] = useState({x:0,y:0});
     const [currentPos,setCurrentPos] = useState({x:0,y:0});
 
-    const drawnPlaneNum = toNum(drawnPlane);
-    const selectedPlaneNum = toNum(selectedPlane);
+    const drawnPlaneNum = Utils.parsePlane(drawnPlane);
+    const selectedPlaneNum = Utils.parsePlane(selectedPlane);
 
     const selectionBounds = () => {
         let x = initialPos.x;
@@ -78,7 +38,7 @@ export default function MouseOverlay({width,height,drawnPlane,selectedPlane,onSe
     }
 
     const onSelectionChange = (x,y,w,h) => {
-        const plane = screenToPlane(width,height,drawnPlaneNum,{left:x,top:y,width:w,height:h});
+        const plane = Utils.screenToPlane(width,height,drawnPlaneNum,{left:x,top:y,width:w,height:h});
         onSelectedPlaneChanged(plane);
     }
 
@@ -109,7 +69,7 @@ export default function MouseOverlay({width,height,drawnPlane,selectedPlane,onSe
         mainDiv.current.releasePointerCapture(e.pointerId);
         const bounds = selectionBounds();
         if(bounds.valid) {
-            const selection = screenToPlane(width,height,drawnPlaneNum,bounds);
+            const selection = Utils.screenToPlane(width,height,drawnPlaneNum,bounds);
             onSelectedPlaneChanged(selection);
         }
 
@@ -122,8 +82,8 @@ export default function MouseOverlay({width,height,drawnPlane,selectedPlane,onSe
         setCurrentPos({x:x,y:y});
     };
 
-    const selectionOnScreen = planeToScreen(width,height,drawnPlaneNum,selectedPlaneNum);
-    const isSame=same(drawnPlaneNum,selectedPlaneNum);
+    const selectionOnScreen = Utils.planeToScreen(width,height,drawnPlaneNum,selectedPlaneNum);
+    const isSame=Utils.samePlane(drawnPlaneNum,selectedPlaneNum);
     const bounds = selectionBounds();
     return <div
             ref={mainDiv}

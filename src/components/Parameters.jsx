@@ -1,4 +1,5 @@
 import React, {useRef} from 'react';
+import * as Utils from '../fractal-utils.mjs'
 
 function Plane({plane,onChange,label}) {
     const leftInput = useRef();
@@ -48,17 +49,10 @@ function Iterations({value,onChange}) {
     </label></div>
 }
 
-function same(p1,p2) {
-    return parseFloat(p1.left)===parseFloat(p2.left) &&
-        parseFloat(p1.top)===parseFloat(p2.top) &&
-        parseFloat(p1.width)===parseFloat(p2.width) &&
-        parseFloat(p1.height)===parseFloat(p2.height)
-}
-
 export default function Parameters({drawnPlane,onPlaneChanged,onCChanged,onIterationsChanged,onClearSelection,onPlaneReinit,plane,c,iterations}) {
     return <div>
         <Plane plane={plane} label="Plane" onChange={onPlaneChanged} />
-        <input type="button" disabled={same(drawnPlane,plane)} onClick={onClearSelection} value="Clear selection"></input>
+        <input type="button" disabled={Utils.samePlane(drawnPlane,plane)} onClick={onClearSelection} value="Clear selection"></input>
         <input type="button" onClick={onPlaneReinit} value="Reset plane"></input>
         <Point point={c} label="C" onChange={onCChanged} />
         <Iterations value={iterations} onChange={onIterationsChanged} />

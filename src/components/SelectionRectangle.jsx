@@ -14,17 +14,23 @@ export default function SelectionRectangle({left=0,top=0,width=50,height=50,cs=7
 
     };
 
+    console.log("width "+width);
+    console.log("height "+height);
+
     var cleft = left;
     var ctop = top;
-    var cwidth = width;
-    var cheight = height;
+    var cwidth = width + 1;
+    var cheight = height + 1;
+
+    console.log("cwidth "+cwidth);
+    console.log("cheight "+cheight);
     
     var c1 = "nwse-resize";
     var c2 = "nesw-resize";
 
     if(cwidth<0) {
         cleft = cleft + cwidth;
-        cwidth = - cwidth;
+        cwidth = -cwidth;
         [c1,c2] = [c2,c1];
     }
 
@@ -38,14 +44,27 @@ export default function SelectionRectangle({left=0,top=0,width=50,height=50,cs=7
     return <>
         <Draggable onDragDelta={(x,y)=>move("c",x,y)} left={cleft} top={ctop} onDoubleClick={e=>onAction()} style={{width:cwidth+"px",height:cheight+"px"}}></Draggable>
         <Draggable onDragDelta={(x,y)=>move("nw",x,y)} left={left-hs} top={top-hs} cursor={c1} draggingCursor={c1} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
-        <Draggable onDragDelta={(x,y)=>move("ne",x,y)} left={left+width-hs} top={top-hs} cursor={c2} draggingCursor={c2} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
-        <Draggable onDragDelta={(x,y)=>move("sw",x,y)} left={left-hs} top={top+height-hs} cursor={c2} draggingCursor={c2} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
-        <Draggable onDragDelta={(x,y)=>move("se",x,y)} left={left+width-hs} top={top+height-hs} cursor={c1} draggingCursor={c1} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
+        <Draggable onDragDelta={(x,y)=>move("ne",x,y)} left={left+width-hs+1} top={top-hs} cursor={c2} draggingCursor={c2} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
+        <Draggable onDragDelta={(x,y)=>move("sw",x,y)} left={left-hs} top={top+height-hs+1} cursor={c2} draggingCursor={c2} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
+        <Draggable onDragDelta={(x,y)=>move("se",x,y)} left={left+width-hs+1} top={top+height-hs+1} cursor={c1} draggingCursor={c1} style={{width:cs,height:cs,backgroundColor:"white",mixBlendMode:"difference"}}></Draggable>
 
-        <div style={{position:"absolute",left:cleft+"px",top:(ctop+hs+1)+"px",width:ls+"px",height:(cheight-cs)+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
-        <div style={{position:"absolute",left:(cleft+cwidth)+"px",top:(ctop+hs+1)+"px",width:ls+"px",height:(cheight-cs)+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
-        <div style={{position:"absolute",left:(cleft+hs+1)+"px",top:ctop+"px",width:(cwidth-cs)+"px",height:ls+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
-        <div style={{position:"absolute",left:(cleft+hs+1)+"px",top:(ctop+cheight)+"px",width:(cwidth-cs)+"px",height:ls+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
+        {(()=>{
+            if(cheight>cs) {
+                return <>
+                <div style={{position:"absolute",left:cleft+"px",top:(ctop+hs+1)+"px",width:ls+"px",height:(cheight-cs)+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
+                <div style={{position:"absolute",left:(cleft+cwidth)+"px",top:(ctop+hs+1)+"px",width:ls+"px",height:(cheight-cs)+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
+                </>
+            }
+        })()}
+
+        {(()=>{
+            if(cwidth>cs) {
+                return <>
+                <div style={{position:"absolute",left:(cleft+hs+1)+"px",top:ctop+"px",width:(cwidth-cs)+"px",height:ls+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
+                <div style={{position:"absolute",left:(cleft+hs+1)+"px",top:(ctop+cheight)+"px",width:(cwidth-cs)+"px",height:ls+"px",backgroundColor:"white",mixBlendMode:"difference"}} ></div>
+                </>
+            }
+        })()}
     </>
 
 }

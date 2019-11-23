@@ -46,7 +46,7 @@ onmessage = function(event) {
                 if(baseX + actualTileWidth > left + width) actualTileWidth = left + width - baseX;
                 if(baseY + actualTileHeight > top + height) actualTileHeight = top + height - baseY;
 
-                const pendingData=Array(actualTileWidth*actualTileHeight).fill([255,0,255,255]).flat();
+                const pendingData=Array(actualTileWidth*actualTileHeight).fill([128,128,128,255]).flat();
 
                 const pending = {
                     "type":"data",
