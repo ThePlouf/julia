@@ -6,6 +6,7 @@ import Parameters from './components/Parameters'
 import * as Fractal from './fractal'
 
 class App extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -15,6 +16,9 @@ class App extends React.Component {
             iterations:"10000"
         };
 
+        this.width = "512";
+        this.height = "512";
+    
         this.state.selectedPlane = this.state.drawnPlane;
         
         this.onDraw = this.onDraw.bind(this);
@@ -32,7 +36,21 @@ class App extends React.Component {
             });
     }
 
+    selectionToScreen() {
+        const rect = this.state.selectedPlane;
+        const drawn = this.state.drawnPlane;
+
+        const x = (rect.left - drawn.left) * this.width / drawn.width
+        const y = (rect.top - drawn.top) * this.height / drawn.height
+        const w = rect.width * this.width / drawn.width;
+        const h = rect.height * this.height / drawn.height;
+
+        return {left:x,top:y,width:w,height:h};
+    }
+
     onDraw() {
+        //this.onClear();
+        Fractal.zoom(document.getElementById("canvas"),this.selectionToScreen())
         const params = {
             planeLeft:parseFloat(this.state.selectedPlane.left),
             planeTop:parseFloat(this.state.selectedPlane.top),
@@ -78,15 +96,16 @@ class App extends React.Component {
         });
     }
 
-    render() {
-        const width = "512";
-        const height = "512";
+    componentDidMount() {
+        this.onDraw();
+    }
 
+    render() {
         return <div style={{position:"relative",backgroundColor:"white"}}>
-            <canvas id="canvas" width={width} height={height} style={{border:'1px solid'}}></canvas>
+            <canvas id="canvas" width={this.width} height={this.height} style={{border:'1px solid'}}></canvas>
             <MouseOverlay
-                width={width}
-                height={height}
+                width={this.width}
+                height={this.height}
                 drawing={this.state.cancel!=null}
                 drawnPlane={this.state.drawnPlane}
                 selectedPlane={this.state.selectedPlane}

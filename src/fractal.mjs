@@ -4,8 +4,6 @@ export function clear(canvas) {
 }
 
 export function draw(canvas,params,onComplete) {
-    clear(canvas);
-
     const ctx = canvas.getContext("2d");
 
     const workerCount = 4;
@@ -58,4 +56,15 @@ export function draw(canvas,params,onComplete) {
     }
 
     return ()=>{workers.forEach(w=>w.terminate())};
+}
+
+export function zoom(canvas,rectangle) {
+    const ctx = canvas.getContext("2d");
+
+    if(rectangle.left>=0 && rectangle.top>=0 && rectangle.left+rectangle.width<=canvas.width && rectangle.top+rectangle.height<=canvas.height) {
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(canvas, rectangle.left, rectangle.top, rectangle.width, rectangle.height, 0, 0, canvas.width, canvas.height);    
+    } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
 }

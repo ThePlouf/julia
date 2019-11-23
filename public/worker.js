@@ -46,6 +46,18 @@ onmessage = function(event) {
                 if(baseX + actualTileWidth > left + width) actualTileWidth = left + width - baseX;
                 if(baseY + actualTileHeight > top + height) actualTileHeight = top + height - baseY;
 
+                const pendingData=Array(actualTileWidth*actualTileHeight).fill([255,0,255,255]).flat();
+
+                const pending = {
+                    "type":"data",
+                    "left":baseX,
+                    "top":baseY,
+                    "width":actualTileWidth,
+                    "height":actualTileHeight,
+                    "data":pendingData
+                };
+                postMessage(pending);
+
                 const data=new Array(actualTileWidth*actualTileHeight);
 
                 for(let ly=0;ly<actualTileHeight;ly++) {
