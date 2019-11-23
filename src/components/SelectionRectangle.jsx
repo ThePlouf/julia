@@ -14,13 +14,13 @@ export default function SelectionRectangle({left=0,top=0,width=50,height=50,cs=7
 
     };
 
-    var cleft = left;
-    var ctop = top;
-    var cwidth = width + 1;
-    var cheight = height + 1;
+    let cleft = left;
+    let ctop = top;
+    let cwidth = width + 1;
+    let cheight = height + 1;
     
-    var c1 = "nwse-resize";
-    var c2 = "nesw-resize";
+    let c1 = "nwse-resize";
+    let c2 = "nesw-resize";
 
     if(cwidth<0) {
         cleft = cleft + cwidth;
