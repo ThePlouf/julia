@@ -1,6 +1,6 @@
 import React, {useState,useRef} from 'react';
 import SelectionRectangle from './SelectionRectangle'
-import * as Utils from '../fractal-utils.mjs'
+import * as Utils from '../fractal-utils'
 
 export default function MouseOverlay({width,height,drawnPlane,selectedPlane,onSelectedPlaneChanged=()=>{},onReset=()=>{},onDraw=()=>{}}) {
     const mainDiv = useRef(null);

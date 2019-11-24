@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import * as Utils from '../fractal-utils.mjs'
+import * as Utils from '../fractal-utils'
 
 function Plane({plane,onChange,label}) {
     const leftInput = useRef();
